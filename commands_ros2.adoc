@@ -27,7 +27,7 @@
 * ``rqt_graph``: 노드와 토픽의 그래프 뷰
 
 == 008 노드와 데이터 통신
-* 새 거북이 소환, 이름은 ``new_turtle``: ``ros2 run turtlesim turtlesim_node __node:=new_turtle``
+* 새 거북이 소환, 이름은 "new_turtle": ``ros2 run turtlesim turtlesim_node __node:=new_turtle``
 * 특정 노드(이름X, 유형O) 정보 보기: ``ros2 node info /turtlesim``
 
 == 009 토픽
@@ -108,10 +108,13 @@
 == 020 파일 시스템
 * 바이너리 설치: ``sudo apt install ros-foxy-teleop-twist-joy``
 * 소스 코드 설치: +
-    cd ~/robot_ws/src +
-    git clone https://github.com/ros2/teleop_twist_joy.git +
-    cd ~/robot_ws/ +
-    colcon build --symlink-install --packages-select teleop_twist_joy
+[source,shell,linenums]
+----
+cd ~/robot_ws/src
+git clone https://github.com/ros2/teleop_twist_joy.git
+cd ~/robot_ws/
+colcon build --symlink-install --packages-select teleop_twist_joy
+----
 
 == 021 빌드 시스템과 빌드 툴
 * 패키지 생성 템플릿: ``ros2 pkg create [패키지이름] --build-type [빌드 타입] --dependencies [의존하는패키지1] [의존하는패키지n]``

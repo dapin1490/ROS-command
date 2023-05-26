@@ -1,0 +1,179 @@
+= ROS2 커맨드
+:toc:
+:hide-uri-scheme:
+
+기본 참고 링크: link:https://cafe.naver.com/openrt/24070[000 로봇 운영체제 ROS 강좌 목차]
+
+예제 프로젝트 폴더 경로: ``~/robot_ws/``
+
+
+== 팁
+* 파일을 저장했는데 어디 있는지 모르겠다: ``ls *.sh`` 또는 ``ls -ltr *.sh`` 사용하면 홈디렉토리 내에 있는 모든 배쉬 파일 목록 조회 가능
+* 어떤 폴더 안에 저장했는데 못찾겠다: ``ls -ltr */*.sh`` 사용하면 한 단계 들어간 폴더 내의 모든 파일 조회
+* 잘못 설치한 폴더 삭제하기: ``sudo rm -r [지울 폴더명]``
+
+== 007 패키지 설치와 노드 실행
+* 거북이 소환: ``ros2 run turtlesim turtlesim_node``
+* 컨트롤러 소환: ``ros2 run turtlesim turtle_teleop_key``
+
+.``ros2 [조회 대상] list``
+* ``node``: 사용중인 노드 목록
+* ``topic``: 사용중인 토픽 목록
+* ``service``: 사용중인 서비스
+* ``action``: 사용중인 액션
+
+//-
+
+* ``rqt_graph``: 노드와 토픽의 그래프 뷰
+
+== 008 노드와 데이터 통신
+* 새 거북이 소환, 이름은 ``new_turtle``: ``ros2 run turtlesim turtlesim_node __node:=new_turtle``
+* 특정 노드(이름X, 유형O) 정보 보기: ``ros2 node info /turtlesim``
+
+== 009 토픽
+* 토픽 목록: ``ros2 topic list -t``
+* 정보: ``ros2 topic info /turtle1/cmd_vel``
+* 내용: ``ros2 topic echo /turtle1/cmd_vel``
+* 대역폭: ``ros2 topic bw /turtle1/cmd_vel``
+* 주기: ``ros2 topic hz /turtle1/cmd_vel``
+* 지연 시간: ``ros2 topic delay /TOPIC_NAME``
+
+//-
+
+.토픽 발행
+* 템플릿: ``ros2 topic pub <topic_name> <msg_type> "<args>"``
+* 사분원: ``ros2 topic pub --once /turtle1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}"``
+* 무한반복 원: ``ros2 topic pub --rate 1 /turtle1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}"``
+
+.bag 기록
+* 템플릿: ``ros2 bag record <topic_name1> <topic_name2> <topic_name3>``
+* 기본 기록: ``ros2 bag record /turtle1/cmd_vel`` +
+    10초 정도 가만히 냅뒀다가 ``Ctrl+C``로 종료
+* 기록 정보 조회: ``ros2 bag info rosbag2_[기록날짜]/`` +
+    파일명은 ``rosbag2_``까지만 입력하고 탭을 3번 치면 파일명 목록이 나온다. 따라 쓰면 됨. 하나만 있다면 탭 한 번에 바로 완성됨.
+* 기록 재생: ``ros2 bag play rosbag2_[기록날짜]/``
+
+== 010 서비스
+* 서비스 목록 확인: ``ros2 service list``
+* 서비스 형태 확인: ``ros2 service type /[서비스명]``
+* 서비스 목록과 형태 확인: ``ros2 service list -t``
+* 서비스 찾기: ``ros2 service find std_srvs/srv/Empty``
+* 서비스 요청 템플릿: ``ros2 service call <service_name> <service_type> "<arguments>"``
+* 거북이 펜 지우기: ``ros2 service call /clear std_srvs/srv/Empty``
+* 거북이 지우기: ``ros2 service call /kill turtlesim/srv/Kill "name: 'turtle1'"``
+* 다 리셋: ``ros2 service call /reset std_srvs/srv/Empty``
+* 거북이 펜 꾸미기: ``ros2 service call /turtle1/set_pen turtlesim/srv/SetPen "{r: 255, g: 255, b: 255, width: 10}"``
+
+//-
+
+* 닌자거북이 +
+    ** 기본 거북이 지우기: ``ros2 service call /kill turtlesim/srv/Kill "name: 'turtle1'"``
+    ** 레오나르도: ``ros2 service call /spawn turtlesim/srv/Spawn "{x: 5.5, y: 9, theta: 1.57, name: 'leonardo'}"``
+    ** 라파엘로: ``ros2 service call /spawn turtlesim/srv/Spawn "{x: 5.5, y: 7, theta: 1.57, name: 'raffaello'}"``
+    ** 미켈란젤로: ``ros2 service call /spawn turtlesim/srv/Spawn "{x: 5.5, y: 5, theta: 1.57, name: 'michelangelo'}"``
+    ** 도나텔로: ``ros2 service call /spawn turtlesim/srv/Spawn "{x: 5.5, y: 3, theta: 1.57, name: 'donatello'}"``
+
+== 011 액션
+* 액션 목록: ``ros2 action list -t``
+* 액션 정보: ``ros2 action info /turtle1/rotate_absolute``
+* 액션 목표 전달 템플릿: ``ros2 action send_goal <action_name> <action_type> "<values>"``
+* 12시 방향으로 회전: ``ros2 action send_goal /turtle1/rotate_absolute turtlesim/action/RotateAbsolute "{theta: 1.5708}"`` +
+    뒤에 ``--feedback``을 붙이면 회전하면서 남은 회전량 출력
+
+== 013 파라미터
+* 파라미터 리스트: ``ros2 param list``
+* 특정 파라미터 자세히 보기: ``ros2 param list describe /turtlesim [파라미터명]``
+* 특정 파라미터 값 얻기(get): ``ros2 param get /turtlesim [파라미터명]``
+* 특정 파라미터 값 바꾸기(set): ``ros2 param set /turtlesim [파라미터명] [값]``
+* 바꾼 파라미터 저장하기(결과로 출력되는 파일에 파라미터 상태가 저장됨): ``ros2 param dump /turtlesim``
+
+//-
+
+* 저장된 파라미터 확인하기: ``gedit turtlesim.yaml``
+* 저장한 파라미터 이용하여 터틀심 생성: ``ros2 run turtlesim turtlesim_node --ros-args --params-file turtlesim.yaml``
+* 파라미터 삭제: ``ros2 param delete /turtlesim background_b``
+
+//-
+
+* 무슨 명령어를 쳐야 할지 모르겠다: 명령어 뒤에 ``-h``를 붙이면 그 다음에 뭘 쓸 수 있는지 보여줌
+
+//-
+
+질문: 삭제한 파라미터를 다시 추가할 수도 있나? +
+답변: 삭제한 시점에 바로 직접 추가하는 것은 안 되고, 터미널 창을 완전히 끈 다음 다시 실행하면 복구된다. 파라미터가 너무 많거나 특정 파라미터가 없을 때 나타나는 변화를 확인하고자 할 때 파라미터를 삭제한다.
+
+== 016 인터페이스
+* 메시지 인터페이스 정보 보기: ``ros2 interface show geometry_msgs/msg/Vector3``
+
+== 020 파일 시스템
+* 바이너리 설치: ``sudo apt install ros-foxy-teleop-twist-joy``
+* 소스 코드 설치: +
+    cd ~/robot_ws/src +
+    git clone https://github.com/ros2/teleop_twist_joy.git +
+    cd ~/robot_ws/ +
+    colcon build --symlink-install --packages-select teleop_twist_joy
+
+== 021 빌드 시스템과 빌드 툴
+* 패키지 생성 템플릿: ``ros2 pkg create [패키지이름] --build-type [빌드 타입] --dependencies [의존하는패키지1] [의존하는패키지n]``
+* cpp와 py 패키지 생성(``robot_ws/``): +
+    ``ros2 pkg create test_pkg_rclcpp --build-type ament_cmake`` +
+    ``ros2 pkg create test_pkg_rclpy --build-type ament_python``
+* 개인 패키지 생성(``robot_ws/src/``, ``my_first_ros_rclcpp_pkg, test_pkg_rclpy``): +
+    ``ros2 pkg create [패키지명] --build-type ament_cmake --dependencies rclcpp std_msgs`` +
+    ``ros2 pkg create [패키지명] --build-type ament_python --dependencies rclpy std_msgs``
+* 빌드(``robot_ws/``): ``colcon build --symlink-install``
+
+== 025 ROS 프로그래밍 기초 cpp
+* 패키지 생성: ``ros2 pkg create my_first_ros_rclcpp_pkg --build-type ament_cmake --dependencies rclcpp std_msgs``
+* 빌드 +
+    ``cd ~/robot_ws`` +
+    ``colcon build --symlink-install --packages-select my_first_ros_rclcpp_pkg``
+* 빌드 템플릿
+
+[source,shell,linenums]
+----
+(워크스페이스내의 모든 패키지 빌드하는 방법) 
+$ cd ~/robot_ws && colcon build --symlink-install
+
+(특정 패키지만 빌드하는 방법)
+$ cd ~/robot_ws && colcon build --symlink-install --packages-select [패키지 이름1] [패키지 이름2] [패키지 이름N]
+
+(특정 패키지 및 의존성 패키지를 함께 빌드하는 방법)
+$ cd ~/robot_ws && colcon build --symlink-install --packages-up-to [패키지 이름]
+----
+
+* 첫 빌드 후 환경설정 적용 +
+    ``cd ~/robot_ws/install`` +
+    ``. local_setup.bash``
+
+* 실행 +
+    ``ros2 run my_first_ros_rclcpp_pkg helloworld_subscriber`` +
+    ``ros2 run my_first_ros_rclcpp_pkg helloworld_publisher``
+
+== 027 토픽, 서비스, 액션 인터페이스
+* 인터페이스 패키지 만들기 +
+    ``cd ~/robot_ws/src`` +
+    ``ros2 pkg create --build-type ament_cmake msg_srv_action_interface_example`` +
+    ``cd msg_srv_action_interface_example`` +
+    ``mkdir msg srv action`` +
+    이후 참고 링크에서 요구하는 파일을 각 폴더에 생성, 요구하는 내용으로 파일 저장
+* 빌드: ``cw && cbp msg_srv_action_interface_example``
+* 각종 오류로 진행이 불가할 때 마지막 방법: ``cw && cd src && git clone https://github.com/robotpilot/ros2-seminar-examples``, ``cw && cd src && rm -r msg_srv_action_interface_example``, ``cw && cd src && mv ros2-seminar-examples/msg_srv_action_interface_example/ .`` 이후 빌드
+
+== 034 ROS 2 패키지 설계 cpp
+* 소스 코드 다운로드 및 빌드
+
+[source,shell,linenums]
+----
+cw && cd src
+git clone https://github.com/robotpilot/ros2-seminar-examples.git
+cw && colcon build --symlink-install
+echo 'source ~/robot_ws/install/local_setup.bash' >> ~/.bashrc
+source ~/.bashrc
+----
+
+* 토픽 서브스크라이버, 서비스 서버, 액션 서버 실행: ``ros2 run topic_service_action_rclcpp_example calculator``
+* 토픽 퍼블리셔 실행: ``ros2 run topic_service_action_rclcpp_example argument``
+* 서비스 클라이언트 실행: ``ros2 run topic_service_action_rclcpp_example operator``
+* 액션 클라이언트 실행: ``ros2 run topic_service_action_rclcpp_example checker``
+* 런치 파일 실행: ``ros2 launch topic_service_action_rclcpp_example arithmetic.launch.py``

@@ -1,0 +1,83 @@
+= ROS 커맨드
+:toc:
+:hide-uri-scheme:
+
+기본 참고 링크: link:https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start/[Quick Start Guide]
+
+* 와이파이 이름: mobilityclass
+* 와이파이 비번: pw12345678
+* 교수님 내선번호: 7609
+
+== 기본 실행 명령어
+dapin: ``$ roscore`` +
+dapin: ``$ ssh ubuntu@{IP_ADDRESS_OF_RASPBERRY_PI}`` +
+ubuntu: ``$ export TURTLEBOT3_MODEL=waffle_pi``
+
+== bringup
+ubuntu: ``$ roslaunch turtlebot3_bringup turtlebot3_robot.launch``
+
+== teleop
+ubuntu: ``$ roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch``
+
+[source]
+----
+w/x : increase/decrease linear velocity
+a/d : increase/decrease angular velocity
+space key, s : force stop
+CTRL-C to quit
+----
+
+== SLAM
+사전 준비: ``roscore`` -> ``ssh`` -> ``export TURTLEBOT3_MODEL=waffle_pi`` -> ``roslaunch turtlebot3_bringup turtlebot3_robot.launch``
+
+새 터미널: +
+``$ export TURTLEBOT3_MODEL=waffle_pi`` +
+``$ roslaunch turtlebot3_slam turtlebot3_slam.launch``
+
+새 터미널: +
+``$ export TURTLEBOT3_MODEL=waffle_pi`` +
+``$ roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch``
+
+== save map
+``$ rosrun map_server map_saver -f ~/map`` +
+``-f``: 지정된 파일 경로에 map을 저장함
+
+== Navigation
+NOTE: 원격 PC에서 내비게이션을 실행하세요. +
+작업을 실행하기 전에 반드시 TurtleBot3에서 불러오기를 실행하세요. +
+내비게이션은 SLAM에서 생성한 지도를 사용합니다. 내비게이션을 실행하기 전에 지도를 준비해 주세요.
+
+.Navigation
+. Run Navigation Nodes +
+  .. ``$ roscore`` +
+  .. ``$ ssh ubuntu@192.168.1.X`` +
+    ``$ export TURTLEBOT3_MODEL=waffle_pi`` +
+    ``$ roslaunch turtlebot3_bringup turtlebot3_robot.launch``
+  .. ``$ export TURTLEBOT3_MODEL=waffle_pi`` +
+    ``$ roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/map.yaml``
+. Estimate Initial Pose
+  .. RViz 메뉴에서 ``2D Pose Estimate`` 버튼을 클릭합니다.
+  .. 실제 로봇이 위치한 지도를 클릭하고 큰 녹색 화살표를 로봇이 향하는 방향으로 드래그합니다.
+  .. 저장된 지도에 LDS 센서 데이터가 오버레이될 때까지 1단계와 2단계를 반복합니다.
+  .. 키보드 원격 조작 노드를 실행하여 지도에서 로봇의 정확한 위치를 파악합니다. +
+    ``$ roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch``
+  .. 로봇을 앞뒤로 조금 움직여 주변 환경 정보를 수집하고 작은 녹색 화살표로 표시되는 지도에서 TurtleBot3의 예상 위치를 좁힙니다.
+  .. 탐색 중에 여러 노드에서 서로 다른 *cmd_vel* 값이 게시되는 것을 방지하기 위해 키보드 원격 조작 노드를 종료하려면 원격 조작 노드 터미널에 ``Ctrl`` + ``C``를 입력하여 키보드 원격 조작 노드를 종료합니다.
+. Set Navigation Goal
+  .. RViz 메뉴에서 ``2D Nav Goal`` 버튼을 클릭합니다.
+  .. 지도를 클릭하여 로봇의 목적지를 설정하고 녹색 화살표를 로봇이 향할 방향으로 드래그합니다.
+    * 녹색 화살표는 로봇의 목적지를 지정할 수 있는 마커입니다.
+    * 화살표의 근원은 목적지의 ``x``, ``y`` 좌표이며 각도 ``θ``는 화살표의 방향에 따라 결정됩니다.
+    * x, y, θ가 설정되면 TurtleBot3는 즉시 목적지로 이동하기 시작합니다.
+
+== topic monitor
+dapin: ``rqt``
+
+. PC에서 아래 명령어로 rqt를 실행합니다. 토픽 모니터 창이 표시되지 않으면 ``plugin`` -> ``Topics`` -> ``Topic Monitor``를 선택합니다.
+. Topic Monitor가 로드되면 Topic 값이 모니터링되지 않습니다. 토픽을 모니터링하려면 각 토픽 옆의 확인란을 클릭합니다.
+. 더 자세한 주제 메시지를 보려면 확인란 옆의 ▶ 아이콘을 클릭합니다.
+. ``/battery_state``는 현재 배터리 전압 및 남은 용량 등 배터리 상태와 관련된 메시지를 표시합니다.
+. ``/diagnostics`` 은 MPU9250, 다이나믹셀-X, HLS-LFCD-LDS, 배터리, OpenCR 등 TurtleBot3에 연결된 구성 요소의 상태를 메시지로 표시합니다.
+. ``/odom``은 TurtleBot3의 주행 거리 측정 메시지를 나타냅니다. 이 항목에는 인코더 데이터에 의한 방향과 위치가 있습니다.
+. ``/sensor_state``는 인코더 값, 배터리 및 토크를 메시지로 표시합니다.
+. ``/scan``은 각도_최대 및 최소, 범위_최대 및 최소, 범위 표시, 범위와 같은 모든 LDS 데이터를 메시지로 표시합니다.

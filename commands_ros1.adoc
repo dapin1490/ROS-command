@@ -16,6 +16,17 @@ ubuntu: ``$ export TURTLEBOT3_MODEL=waffle_pi``
 == bringup
 ubuntu: ``$ roslaunch turtlebot3_bringup turtlebot3_robot.launch``
 
+== topic monitor
+. PC에서 아래 명령어로 rqt를 실행합니다. 토픽 모니터 창이 표시되지 않으면 ``plugin`` -> ``Topics`` -> ``Topic Monitor``를 선택합니다. +
+  ``$ rqt``
+. Topic Monitor가 로드되면 Topic 값이 모니터링되지 않습니다. 토픽을 모니터링하려면 각 토픽 옆의 확인란을 클릭합니다.
+. 더 자세한 주제 메시지를 보려면 확인란 옆의 ▶ 아이콘을 클릭합니다.
+. ``/battery_state``는 현재 배터리 전압 및 남은 용량 등 배터리 상태와 관련된 메시지를 표시합니다.
+. ``/diagnostics`` 은 MPU9250, 다이나믹셀-X, HLS-LFCD-LDS, 배터리, OpenCR 등 TurtleBot3에 연결된 구성 요소의 상태를 메시지로 표시합니다.
+. ``/odom``은 TurtleBot3의 주행 거리 측정 메시지를 나타냅니다. 이 항목에는 인코더 데이터에 의한 방향과 위치가 있습니다.
+. ``/sensor_state``는 인코더 값, 배터리 및 토크를 메시지로 표시합니다.
+. ``/scan``은 각도_최대 및 최소, 범위_최대 및 최소, 범위 표시, 범위와 같은 모든 LDS 데이터를 메시지로 표시합니다.
+
 == teleop
 ubuntu: ``$ roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch``
 
@@ -70,13 +81,80 @@ NOTE: 원격 PC에서 내비게이션을 실행하세요. +
     * 화살표의 근원은 목적지의 ``x``, ``y`` 좌표이며 각도 ``θ``는 화살표의 방향에 따라 결정됩니다.
     * x, y, θ가 설정되면 TurtleBot3는 즉시 목적지로 이동하기 시작합니다.
 
-== topic monitor
-. PC에서 아래 명령어로 rqt를 실행합니다. 토픽 모니터 창이 표시되지 않으면 ``plugin`` -> ``Topics`` -> ``Topic Monitor``를 선택합니다. +
-  ``$ rqt``
-. Topic Monitor가 로드되면 Topic 값이 모니터링되지 않습니다. 토픽을 모니터링하려면 각 토픽 옆의 확인란을 클릭합니다.
-. 더 자세한 주제 메시지를 보려면 확인란 옆의 ▶ 아이콘을 클릭합니다.
-. ``/battery_state``는 현재 배터리 전압 및 남은 용량 등 배터리 상태와 관련된 메시지를 표시합니다.
-. ``/diagnostics`` 은 MPU9250, 다이나믹셀-X, HLS-LFCD-LDS, 배터리, OpenCR 등 TurtleBot3에 연결된 구성 요소의 상태를 메시지로 표시합니다.
-. ``/odom``은 TurtleBot3의 주행 거리 측정 메시지를 나타냅니다. 이 항목에는 인코더 데이터에 의한 방향과 위치가 있습니다.
-. ``/sensor_state``는 인코더 값, 배터리 및 토크를 메시지로 표시합니다.
-. ``/scan``은 각도_최대 및 최소, 범위_최대 및 최소, 범위 표시, 범위와 같은 모든 LDS 데이터를 메시지로 표시합니다.
+== Simulation
+.Install Simulation Package
+TurtleBot3 시뮬레이션 패키지를 사용하려면 전제 조건으로 ``turtlebot3`` 및 ``turtlebot3_msgs`` 패키지가 필요합니다. 이 필수 패키지가 없으면 시뮬레이션을 실행할 수 없습니다. +
+필수 패키지 및 종속 패키지를 설치하지 않은 경우 link:https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start/[PC 설치] 안내를 따르십시오.
+
+[source,shell,linenums]
+----
+$ cd ~/catkin_ws/src/
+$ git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
+$ cd ~/catkin_ws && catkin_make
+----
+
+.Launch Simulation World
+터틀봇3에는 세 가지 시뮬레이션 환경이 준비되어 있습니다. 이 환경 중 하나를 선택하여 가제보를 실행하세요. +
+_새 월드를 시작하기 전에 다른 시뮬레이션 월드를 완전히 종료해야 합니다._
+
+. Empty World
+
+[source,shell,linenums]
+----
+$ export TURTLEBOT3_MODEL=waffle_pi
+$ roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch
+----
+
+[start=2]
+. TurtleBot3 World
+
+[source,shell,linenums]
+----
+$ export TURTLEBOT3_MODEL=waffle_pi
+$ roslaunch turtlebot3_gazebo turtlebot3_world.launch
+----
+
+[start=3]
+. TurtleBot3 House
+
+[source,shell,linenums]
+----
+$ export TURTLEBOT3_MODEL=waffle_pi
+$ roslaunch turtlebot3_gazebo turtlebot3_house.launch
+----
+
+NOTE: TurtleBot3 House를 처음 실행하는 경우, 네트워크 상태에 따라 지도를 다운로드하는 데 몇 분 이상 걸릴 수 있습니다.
+
+.Operate TurtleBot3
+키보드로 터틀봇3를 원격 조종하기 위해서는 새 터미널 창에서 아래 명령어로 원격 조종 노드를 실행합니다. +
+``export TURTLEBOT3_MODEL=waffle_pi`` +
+``roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch``
+
+=== SLAM Simulation
+가제보 시뮬레이터에서 SLAM을 실행하면 가상세계에서 다양한 환경과 로봇 모델을 선택하거나 생성할 수 있습니다. 로봇을 불러오는 대신 시뮬레이션 환경을 준비하는 것 외에는 실제 터틀봇3를 이용한 SLAM 시뮬레이션과 매우 유사합니다.
+
+. Launch Simulation World +
+세 가지 Gazebo 환경이 준비되어 있지만 SLAM으로 맵을 만들려면 *TurtleBot3 World* 또는 **TurtleBot3 House**를 사용하는 것이 좋습니다.
+. Run SLAM Node +
+원격 PC에서 ``Ctrl + Alt + T``로 새 터미널을 열고 SLAM 노드를 실행합니다. 기본적으로 Gmapping SLAM 방식이 사용됩니다.
+
+[source,shell,linenums]
+----
+$ export TURTLEBOT3_MODEL=waffle_pi
+$ roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping
+----
+
+[start=3]
+. Run Teleoperation Node +
+새 터미널:
+
+[source,shell,linenums]
+----
+$ export TURTLEBOT3_MODEL=waffle_pi
+$ roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+----
+
+[start=4]
+. Save Map +
+지도가 성공적으로 생성되면 원격 PC에서 ``Ctrl + Alt + T``를 사용하여 새 터미널을 열고 지도를 저장합니다. +
+``rosrun map_server map_saver -f ~/map``

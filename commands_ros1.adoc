@@ -15,7 +15,8 @@ ubuntu: ``$ export TURTLEBOT3_MODEL=waffle_pi``
 
 == bringup
 ubuntu: ``$ roslaunch turtlebot3_bringup turtlebot3_robot.launch`` +
-pc와 터틀봇의 bashrc에서 ip를 설정해주어야 한다. pc에서는 호스트와 마스터가 둘 다 자신의 ip, 터틀봇은 마스터의 ip가 pc, 호스트의 ip가 터틀봇.
+pc와 터틀봇의 bashrc에서 ip를 설정해주어야 한다. pc에서는 호스트와 마스터가 둘 다 자신의 ip, 터틀봇은 마스터의 ip가 pc, 호스트의 ip가 터틀봇. +
+after edit ``~/.bashrc``, you must write ``source ~/.bashrc``
 
 == topic monitor
 . PC에서 아래 명령어로 rqt를 실행합니다. 토픽 모니터 창이 표시되지 않으면 ``plugin`` -> ``Topics`` -> ``Topic Monitor``를 선택합니다. +

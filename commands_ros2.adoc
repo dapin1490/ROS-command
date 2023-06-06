@@ -43,7 +43,10 @@
 
 .토픽 발행
 * 템플릿: ``ros2 topic pub <topic_name> <msg_type> "<args>"``
-* 사분원: ``ros2 topic pub --once /turtle1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}"``
+* 사분원: ``ros2 topic pub --once /turtle1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}"``+
+    180도 회전: ``z: 3.14`` +
+    360도 회전: ``z: 6.28`` +
+    -> ros2에서 각도는 모두 180도 = 3.14라고 두고 계산하면 된다.
 * 무한반복 원: ``ros2 topic pub --rate 1 /turtle1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}"``
 
 .bag 기록
@@ -79,7 +82,8 @@
 * 액션 정보: ``ros2 action info /turtle1/rotate_absolute``
 * 액션 목표 전달 템플릿: ``ros2 action send_goal <action_name> <action_type> "<values>"``
 * 12시 방향으로 회전: ``ros2 action send_goal /turtle1/rotate_absolute turtlesim/action/RotateAbsolute "{theta: 1.5708}"`` +
-    뒤에 ``--feedback``을 붙이면 회전하면서 남은 회전량 출력
+    뒤에 ``--feedback``을 붙이면 회전하면서 남은 회전량 출력+
+    마찬가지로, 오른쪽 방향(노드의 초기 방향)을 기준으로 180도 회전은 3.14로 놓고 계산하면 됨.
 
 == 013 파라미터
 * 파라미터 리스트: ``ros2 param list``

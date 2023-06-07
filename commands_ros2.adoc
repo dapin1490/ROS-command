@@ -29,7 +29,8 @@
 
 == 008 노드와 데이터 통신
 * 새 거북이 소환, 이름은 "new_turtle": ``ros2 run turtlesim turtlesim_node __node:=new_turtle``
-* 특정 노드(이름X, 유형O) 정보 보기: ``ros2 node info /turtlesim``
+* 특정 노드(이름X, 유형O) 정보 보기: ``ros2 node info /turtlesim`` + 
+    -> new_turtle라는 이름으로 노드를 만들었을 경우 /new_turtle로 검색해야 함.
 
 == 009 토픽
 * 토픽 목록: ``ros2 topic list -t``
@@ -50,7 +51,8 @@
 * 무한반복 원: ``ros2 topic pub --rate 1 /turtle1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}"``
 
 .bag 기록
-* 템플릿: ``ros2 bag record <topic_name1> <topic_name2> <topic_name3>``
+* 템플릿: ``ros2 bag record <topic_name1> <topic_name2> <topic_name3>`` + 
+    한 번에 여러 개의 토픽을 기록할 수 있음. 다만 토픽 외의 것들 (action)은 기록 못 함
 * 기본 기록: ``ros2 bag record /turtle1/cmd_vel`` +
     10초 정도 가만히 냅뒀다가 ``Ctrl+C``로 종료
 * 기록 정보 조회: ``ros2 bag info rosbag2_[기록날짜]/`` +

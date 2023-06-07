@@ -12,7 +12,7 @@
 * 어떤 폴더 안에 저장했는데 못찾겠다: ``ls -ltr */*.sh`` 사용하면 한 단계 들어간 폴더 내의 모든 파일 조회
 * 잘못 설치한 폴더 삭제하기: ``sudo rm -r [지울 폴더명]``
 * 패키지 실행자 목록 보기: ``ros2 pkg executables <pkg_name>``
-* 대기 시간 줄 때는 sleep 1 
+* 대기 시간 줄 때는: ``sleep 1 ``
 
 == 007 패키지 설치와 노드 실행
 * 거북이 소환: ``ros2 run turtlesim turtlesim_node``

@@ -40,7 +40,7 @@
 * 대역폭: ``ros2 topic bw /turtle1/cmd_vel``
 * 주기: ``ros2 topic hz /turtle1/cmd_vel``
 * 지연 시간: ``ros2 topic delay /TOPIC_NAME``
-* 토픽 목록: ``/parameter_events [rcl_interfaces/msg/ParameterEvent]`` + 
+* 토픽 목록: + ``/parameter_events [rcl_interfaces/msg/ParameterEvent]`` + 
             ``/rosout [rcl_interfaces/msg/Log]`` + 
             ``/turtle1/cmd_vel [geometry_msgs/msg/Twist]`` + 
             ``/turtle1/color_sensor [turtlesim/msg/Color]`` + 
@@ -72,7 +72,7 @@
 * 서비스 목록과 형태 확인: ``ros2 service list -t``
 * 서비스 찾기: ``ros2 service find std_srvs/srv/Empty``
 * 서비스 요청 템플릿: ``ros2 service call <service_name> <service_type> "<arguments>"``
-* 서비스 목록: ``/clear: std_srvs/srv/Empty`` + 
+* 서비스 목록: + ``/clear: std_srvs/srv/Empty`` + 
               ``/kill: turtlesim/srv/Kill`` + 
               ``/reset: std_srvs/srv/Empty`` + 
               ``/spawn: turtlesim/srv/Spawn`` + 
@@ -88,7 +88,7 @@
 
 //-
 
-* 서비스 예시 *
+* 서비스 예시 + 
     ** 거북이 펜 지우기: ``ros2 service call /clear std_srvs/srv/Empty``
     ** 거북이 지우기: ``ros2 service call /kill turtlesim/srv/Kill "name: 'turtle1'"``
     ** 다 리셋: ``ros2 service call /reset std_srvs/srv/Empty``

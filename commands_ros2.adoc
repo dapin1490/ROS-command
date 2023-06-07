@@ -12,6 +12,7 @@
 * 어떤 폴더 안에 저장했는데 못찾겠다: ``ls -ltr */*.sh`` 사용하면 한 단계 들어간 폴더 내의 모든 파일 조회
 * 잘못 설치한 폴더 삭제하기: ``sudo rm -r [지울 폴더명]``
 * 패키지 실행자 목록 보기: ``ros2 pkg executables <pkg_name>``
+* 대기 시간 줄 때는 sleep 1 
 
 == 007 패키지 설치와 노드 실행
 * 거북이 소환: ``ros2 run turtlesim turtlesim_node``
@@ -39,6 +40,12 @@
 * 대역폭: ``ros2 topic bw /turtle1/cmd_vel``
 * 주기: ``ros2 topic hz /turtle1/cmd_vel``
 * 지연 시간: ``ros2 topic delay /TOPIC_NAME``
+* 토픽 목록: ``/parameter_events [rcl_interfaces/msg/ParameterEvent]`` + 
+            ``/rosout [rcl_interfaces/msg/Log]`` + 
+            ``/turtle1/cmd_vel [geometry_msgs/msg/Twist]`` + 
+            ``/turtle1/color_sensor [turtlesim/msg/Color]`` + 
+            ``/turtle1/pose [turtlesim/msg/Pose]`` + 
+            pose와 color_sensor는 구독 상태가 아니라고 뜸. 입력해도 실행중인 노드에 전달되지 않음. 왜 이러는지는 모르겠으나 방향 바꾸려면 cmd_vel 권장
 
 //-
 
@@ -65,10 +72,27 @@
 * 서비스 목록과 형태 확인: ``ros2 service list -t``
 * 서비스 찾기: ``ros2 service find std_srvs/srv/Empty``
 * 서비스 요청 템플릿: ``ros2 service call <service_name> <service_type> "<arguments>"``
-* 거북이 펜 지우기: ``ros2 service call /clear std_srvs/srv/Empty``
-* 거북이 지우기: ``ros2 service call /kill turtlesim/srv/Kill "name: 'turtle1'"``
-* 다 리셋: ``ros2 service call /reset std_srvs/srv/Empty``
-* 거북이 펜 꾸미기: ``ros2 service call /turtle1/set_pen turtlesim/srv/SetPen "{r: 255, g: 255, b: 255, width: 10}"``
+* 서비스 목록: ``/clear: std_srvs/srv/Empty`` + 
+              ``/kill: turtlesim/srv/Kill`` + 
+              ``/reset: std_srvs/srv/Empty`` + 
+              ``/spawn: turtlesim/srv/Spawn`` + 
+              ``/turtle1/set_pen: turtlesim/srv/SetPen`` + 
+              ``/turtle1/teleport_absolute: turtlesim/srv/TeleportAbsolute`` + 
+              ``/turtle1/teleport_relative: turtlesim/srv/TeleportRelative`` + 
+              ``/turtlesim/describe_parameters: rcl_interfaces/srv/DescribeParameters`` + 
+              ``/turtlesim/get_parameter_types: rcl_interfaces/srv/GetParameterTypes`` + 
+              ``/turtlesim/get_parameters: rcl_interfaces/srv/GetParameters`` + 
+              ``/turtlesim/list_parameters: rcl_interfaces/srv/ListParameters`` + 
+              ``/turtlesim/set_parameters: rcl_interfaces/srv/SetParameters`` + 
+              ``/turtlesim/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically``
+
+//-
+
+* 서비스 예시 *
+    ** 거북이 펜 지우기: ``ros2 service call /clear std_srvs/srv/Empty``
+    ** 거북이 지우기: ``ros2 service call /kill turtlesim/srv/Kill "name: 'turtle1'"``
+    ** 다 리셋: ``ros2 service call /reset std_srvs/srv/Empty``
+    ** 거북이 펜 꾸미기: ``ros2 service call /turtle1/set_pen turtlesim/srv/SetPen "{r: 255, g: 255, b: 255, width: 10}"``
 
 //-
 
@@ -85,7 +109,7 @@
 * 액션 목표 전달 템플릿: ``ros2 action send_goal <action_name> <action_type> "<values>"``
 * 12시 방향으로 회전: ``ros2 action send_goal /turtle1/rotate_absolute turtlesim/action/RotateAbsolute "{theta: 1.5708}"`` +
     뒤에 ``--feedback``을 붙이면 회전하면서 남은 회전량 출력 +
-    마찬가지로, 오른쪽 방향(노드의 초기 방향)을 기준으로 180도 회전은 3.14로 놓고 계산하면 됨.
+    오른쪽 방향(노드의 초기 방향)을 기준으로 180도 회전은 3.14로 놓고 계산하면 됨.
 
 == 013 파라미터
 * 파라미터 리스트: ``ros2 param list``
@@ -98,7 +122,8 @@
 
 * 저장된 파라미터 확인하기: ``gedit turtlesim.yaml``
 * 저장한 파라미터 이용하여 터틀심 생성: ``ros2 run turtlesim turtlesim_node --ros-args --params-file turtlesim.yaml``
-* 파라미터 삭제: ``ros2 param delete /turtlesim background_b``
+* 파라미터 삭제: ``ros2 param delete /turtlesim background_b`` + 
+    삭제한 값은 0이 되는 것이 아니라 초기값으로 설정된 것처럼 취급됨 
 
 //-
 

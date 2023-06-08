@@ -7,7 +7,7 @@
 * 와이파이 이름: mobilityclass
 * 와이파이 비번: pw12345678
 * 교수님 내선번호: 7609
-* 
+* 터틀봇 비밀번호: ``turtlebot1``
 
 == 기본 실행 명령어
 dapin: ``$ roscore`` +

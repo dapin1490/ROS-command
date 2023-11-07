@@ -14,6 +14,20 @@
 * 패키지 실행자 목록 보기: ``ros2 pkg executables <pkg_name>``
 * 검색 결과 중에서 검색하기: ``[검색 명령어] | grep [검색어]``
 * 대기 시간 줄 때는: ``sleep 1 ``
+* 폴더 내 모든 압축파일을 압축파일 폴더명으로 압축 해제하기
+[source,shell]
+----
+#!/bin/bash
+
+for f in *.zip
+do
+    name="${f:0:8}"
+    echo $name
+    7z e "$f" -o"$name"
+done
+
+rm *.zip
+----
 
 == 007 패키지 설치와 노드 실행
 * 설치된 패키지 확인 및 검색: ``ros2 pkg list | grep [검색어]``

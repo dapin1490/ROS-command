@@ -31,7 +31,7 @@ after edit ``~/.bashrc``, you must write ``source ~/.bashrc``
 . ``/scan``은 각도_최대 및 최소, 범위_최대 및 최소, 범위 표시, 범위와 같은 모든 LDS 데이터를 메시지로 표시합니다.
 
 == teleop
-ubuntu: ``$ roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch``
+dapin: ``$ roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch``
 
 [source]
 ----

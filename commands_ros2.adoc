@@ -328,6 +328,13 @@ echo 'source ~/robot_ws/install/local_setup.bash' >> ~/.bashrc
 source ~/.bashrc
 ----
 
+=== topic_service_action_rclcpp_example 패키지 구성
+1. 토픽의 관점에서, argument는 퍼블리셔(보내는 쪽), calculator는 서브스크라이버(받는 쪽). 퍼블리셔는 일방적으로 메시지를 전송하며, 서브스크라이버는 메시지 수신 여부와 관계 없이 별도 응답을 보내지 않는다.
+2. 서비스의 관점에서, operator는 클라이언트(보내는 쪽), calculator는 서버(받는 쪽). 클라이언트는 서버에게 request를 보내고, 서버는 이를 받고 응답해야 한다.
+3. 액션의 관점에서, checker는 클라이언트(보내는 쪽), calculator는 서버(받는 쪽). 클라이언트가 먼저 액션의 목표(goal)를 보내고, 서버는 해당 목표를 받아 클라이언트에게 연산 과정(feedback, 중간 결과값)과 연산 결과(result)를 보낸다.
+
+=== topic_service_action_rclcpp_example 패키지 실행
+
 * 토픽 서브스크라이버, 서비스 서버, 액션 서버 실행: ``ros2 run topic_service_action_rclcpp_example calculator``
 * 토픽 퍼블리셔 실행: ``ros2 run topic_service_action_rclcpp_example argument``
 * 서비스 클라이언트 실행: ``ros2 run topic_service_action_rclcpp_example operator``

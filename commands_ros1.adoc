@@ -4,10 +4,16 @@
 
 기본 참고 링크: link:https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start/[Quick Start Guide]
 
-* 와이파이 이름: mobilityclass
+* 와이파이 이름: supermobilityclass
 * 와이파이 비번: pw12345678
 * 교수님 내선번호: 7609
-* 터틀봇 비밀번호: ``turtlebot1``
+* 터틀봇 비밀번호: ``turtlebot``
+
+== 팁
+link:https://happyobo.github.io/ros/ros6-post/[[ROS\] ROS 명령어 정리]
+
+* 실행중인 토픽 리스트 확인: ``rostopic list``
+* 토픽 내용 출력: ``rostopic echo <topic_name>``
 
 == 기본 실행 명령어
 dapin: ``$ roscore`` +

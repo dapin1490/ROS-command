@@ -87,6 +87,18 @@ rm *.zip
     파일명은 ``rosbag2_``까지만 입력하고 탭을 3번 치면 파일명 목록이 나온다. 따라 쓰면 됨. 하나만 있다면 탭 한 번에 바로 완성됨.
 * 기록 재생: ``ros2 bag play rosbag2_[기록날짜]/``
 
+.토픽 해석
+* 원본 명령어 : ``ros2 topic pub --once /turtle1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 3.14}}"``
+* ``ros2`` : ROS2의 명령어를 쓰겠다
+* ``topic` : 토픽을 쓰겠다
+* ``pub`` : 토픽을 '발행'할 것이다
+* ``--once`` : 한 번만 실행해라
+* ``/turtle1/cmd_vel`` : 토픽을 받을 대상. 거북이를 새로 생성했을 경우 [turtle1]자리에 새 거북이 이름 써야 함
+* ``geometry_msgs/msg/Twist`` : 토픽 내용
+* ``"{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 3.14}}"`` : 얼마나 진행하고, 얼마나 회전할 것인지
+** ``linear x``에 거북이의 이동 거리를 정하고
+** ``angular z``에 거북이의 회전 각도를 정함. 라디안 단위.
+
 == 010 서비스
 * 서비스 목록 확인: ``ros2 service list``
 * 서비스 형태 확인: ``ros2 service type /[서비스명]``

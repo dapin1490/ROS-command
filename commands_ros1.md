@@ -27,7 +27,7 @@
 
 <!--  -->
 
-* IP 주소 찾기
+* IP 주소 찾기 (IP 주소는 대체로 항상 바뀐다. 바뀌지 않는 주소를 원한다면 MAC 주소를 외워둘 것.)
     * 윈도우 PC와 리눅스 PC가 별도로 있을 경우
         1. 윈도우 PC 설정에서 네트워크 > 모바일 핫스팟 설정을 찾아 와이파이 이름과 비밀번호, 주파수 대역을 선택하고 실행한다. 설정 창은 그대로 열어둔다.
         2. 만약 터틀봇이 마지막으로 연결했던 와이파이 정보와 달라졌을 경우 SD카드를 꺼내 리눅스 PC에 연결하고 재설정한다. [Configure the WiFi Network Setting](https://emanual.robotis.com/docs/en/platform/turtlebot3/sbc_setup/#configure-the-wifi-network-setting-1)
